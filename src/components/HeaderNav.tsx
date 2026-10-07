@@ -70,16 +70,16 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         </nav>
 
         {/* Zone 3: Actions (Sound toggle, 2D/3D mode switch, Mobile trigger) */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Back to Hub shortcut if inside a zone */}
           {activeZone !== 'hub' && (
             <button
               type="button"
               onClick={() => handleNavClick('hub')}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono text-cyan-300 bg-cyan-950/30 hover:bg-cyan-900/50 border border-cyan-500/40 rounded transition-colors"
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-mono text-cyan-300 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-500/40 rounded transition-colors active:scale-95"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>RETURN TO HUB</span>
+              <span className="hidden xs:inline sm:inline">HUB</span>
             </button>
           )}
 
@@ -88,7 +88,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             type="button"
             onClick={onToggleMute}
             aria-label={isMuted ? 'Unmute system audio' : 'Mute system audio'}
-            className="p-1.5 text-slate-400 hover:text-white border border-slate-800 hover:border-slate-700 bg-slate-900/50 rounded transition-colors"
+            className="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-white border border-slate-800 hover:border-slate-700 bg-slate-900/50 rounded transition-colors active:scale-95"
             title={isMuted ? 'Sound: Muted (Click to enable)' : 'Sound: Active'}
           >
             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-cyan-400" />}
@@ -99,18 +99,18 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             type="button"
             onClick={onToggle3DMode}
             aria-label="Toggle 3D spatial vs 2D editorial view"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 bg-slate-900/50 rounded transition-colors"
+            className="h-9 px-2.5 flex items-center gap-1.5 text-xs font-mono text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 bg-slate-900/50 rounded transition-colors active:scale-95"
             title="Toggle between 3D Spatial Canvas and 2D Editorial View"
           >
             {is3DMode ? (
               <>
                 <Layers className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="hidden sm:inline">3D</span>
+                <span className="text-[11px]">3D</span>
               </>
             ) : (
               <>
                 <Compass className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="hidden sm:inline">2D</span>
+                <span className="text-[11px]">2D</span>
               </>
             )}
           </button>
@@ -119,7 +119,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-1.5 text-slate-300 hover:text-white border border-slate-800 bg-slate-900/50 rounded"
+            className="md:hidden w-9 h-9 flex items-center justify-center text-slate-300 hover:text-white border border-slate-800 bg-slate-900/50 rounded active:scale-95"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -129,7 +129,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-xs font-mono">
+        <div className="md:hidden mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-xs font-mono animate-in fade-in slide-in-from-top-2 duration-150">
           {ZONES.map((zone) => {
             const isActive = activeZone === zone.id;
             return (
@@ -137,10 +137,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                 key={zone.id}
                 type="button"
                 onClick={() => handleNavClick(zone.id)}
-                className={`px-3 py-2 text-left rounded transition-colors ${
+                className={`min-h-[44px] px-3 py-2 text-left rounded transition-colors flex items-center ${
                   isActive
                     ? 'text-cyan-300 bg-cyan-950/60 border border-cyan-500/40 font-semibold'
-                    : 'text-slate-300 hover:text-white bg-slate-900/30'
+                    : 'text-slate-300 hover:text-white bg-slate-900/40'
                 }`}
               >
                 {zone.name}

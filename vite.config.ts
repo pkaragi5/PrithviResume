@@ -10,6 +10,22 @@ export default defineConfig(() => {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },
+      dedupe: ['react', 'react-dom'],
+    },
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react-dom/client',
+        'three',
+        '@react-three/fiber',
+        '@react-three/drei',
+        'motion/react',
+        'lucide-react',
+        'three/examples/jsm/postprocessing/EffectComposer.js',
+        'three/examples/jsm/postprocessing/RenderPass.js',
+        'three/examples/jsm/postprocessing/UnrealBloomPass.js',
+      ],
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

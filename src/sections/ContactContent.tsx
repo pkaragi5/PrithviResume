@@ -75,7 +75,7 @@ export const ContactContent: React.FC = () => {
       </div>
 
       {/* Terminal Cards */}
-      <div className="p-6 sm:p-7 rounded-xl bg-[#070b14]/80 border border-slate-800/80 backdrop-blur-md space-y-4">
+      <div className="p-6 sm:p-7 rounded-xl bg-[#080e1b] border border-slate-800 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {contactItems.map((item) => {
             const Icon = item.icon;
@@ -113,7 +113,7 @@ export const ContactContent: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleCopy(item.key, item.value)}
-                  className="p-1.5 text-slate-500 hover:text-cyan-400 rounded transition-colors cursor-pointer"
+                  className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-cyan-400 active:text-cyan-300 rounded transition-colors cursor-pointer shrink-0"
                   title={`Copy ${item.label}`}
                   aria-label={`Copy ${item.label}`}
                 >

@@ -73,7 +73,7 @@ export const CodeZoneContent: React.FC = () => {
         {filteredGroups.map((group) => (
           <div
             key={group.category}
-            className="p-5 rounded-lg bg-[#070b14]/70 border border-slate-800/80 backdrop-blur-md space-y-3"
+            className="p-5 rounded-lg bg-[#080e1b] border border-slate-800/90 space-y-3"
           >
             <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
               <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
@@ -85,7 +85,7 @@ export const CodeZoneContent: React.FC = () => {
             </div>
 
             {/* Interactive Grid of Technical Items */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-2.5 pt-1">
               {group.skills.map((skill) => {
                 const isCopied = copiedSkill === skill;
                 return (

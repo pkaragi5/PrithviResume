@@ -1,29 +1,52 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { ZoneConfig } from '../../data/portfolioData';
 import { sound } from '../../audio/soundEffects';
+import { createZoneLabelTexture } from './labelTexture';
 
 interface ZoneNodeProps {
   zone: ZoneConfig;
   isActive: boolean;
+  showLabel?: boolean;
+  isMobile?: boolean;
   onSelect: (zoneId: ZoneConfig['id']) => void;
 }
 
-export const ZoneNode: React.FC<ZoneNodeProps> = ({ zone, isActive, onSelect }) => {
+export const ZoneNode: React.FC<ZoneNodeProps> = ({
+  zone,
+  isActive,
+  showLabel = true,
+  isMobile = false,
+  onSelect,
+}) => {
   const [hovered, setHovered] = useState(false);
   const meshGroupRef = useRef<THREE.Group>(null);
   const floatRef = useRef<THREE.Group>(null);
+  const labelBillboardRef = useRef<THREE.Mesh>(null);
+  const [labelTexture, setLabelTexture] = useState<THREE.CanvasTexture | null>(null);
+
+  // Generate crisp WebGL label texture whenever hover or active state changes
+  useEffect(() => {
+    const tex = createZoneLabelTexture(zone.name, isActive, hovered);
+    setLabelTexture(tex);
+    return () => {
+      tex.dispose();
+    };
+  }, [zone.name, isActive, hovered]);
 
   // Floating animation
-  useFrame(({ clock }) => {
+  useFrame(({ clock, camera }) => {
     const t = clock.getElapsedTime();
     if (floatRef.current) {
       floatRef.current.position.y = 1.0 + Math.sin(t * 1.5 + zone.position[0]) * 0.08;
     }
     if (meshGroupRef.current) {
       meshGroupRef.current.rotation.y += (hovered || isActive ? 0.015 : 0.005);
+    }
+    // Billboard label to smoothly face camera in 3D
+    if (labelBillboardRef.current) {
+      labelBillboardRef.current.quaternion.copy(camera.quaternion);
     }
   });
 
@@ -52,7 +75,12 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({ zone, isActive, onSelect }) 
   return (
     <group position={zone.position}>
       {/* Ground Pedestal Marker */}
-      <mesh position={[0, 0.02, 0]}>
+      <mesh
+        position={[0, 0.02, 0]}
+        onClick={handleClick}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+      >
         <cylinderGeometry args={[1.4, 1.6, 0.05, 32]} />
         <meshStandardMaterial
           color="#0b1019"
@@ -219,39 +247,24 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({ zone, isActive, onSelect }) 
         </mesh>
       </group>
 
-      {/* Floating 2.5D Label Overlay */}
-      <Html
-        position={[0, 0.35, 0]}
-        center
-        distanceFactor={9}
-        zIndexRange={[80, 0]}
-      >
-        <button
-          type="button"
+      {/* 3D Billboard Label - Pure WebGL, 0 React roots, 0 unmount race conditions */}
+      {showLabel && labelTexture && (
+        <mesh
+          ref={labelBillboardRef}
+          position={[0, isMobile ? 0.45 : 0.4, 0]}
           onClick={handleClick}
-          onMouseEnter={handlePointerOver}
-          onMouseLeave={handlePointerOut}
-          className={`group flex flex-col items-center cursor-pointer transition-all duration-200 outline-none select-none ${
-            isActive ? 'scale-105' : 'hover:scale-105'
-          }`}
-          aria-label={`Enter ${zone.name}`}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
         >
-          <div
-            className={`px-3 py-1.5 rounded border text-center transition-all duration-200 whitespace-nowrap backdrop-blur-md ${
-              isActive
-                ? 'bg-[#031525]/90 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(0,229,255,0.25)]'
-                : hovered
-                ? 'bg-[#091524]/85 border-cyan-500/50 text-white'
-                : 'bg-[#060b14]/75 border-slate-800 text-slate-300 group-hover:border-slate-600'
-            }`}
-          >
-            <span className="block font-mono text-[10px] tracking-[0.2em] font-semibold">
-              {zone.name}
-            </span>
-          </div>
-          <span className="mt-1 h-3 w-px bg-cyan-400/40" />
-        </button>
-      </Html>
+          <planeGeometry args={isMobile ? [2.1, 0.78] : [1.7, 0.64]} />
+          <meshBasicMaterial
+            map={labelTexture}
+            transparent
+            depthTest={false}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
     </group>
   );
 };

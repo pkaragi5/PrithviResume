@@ -20,7 +20,7 @@ export const AboutContent: React.FC = () => {
       </div>
 
       {/* Editorial Profile Monolith */}
-      <div className="p-6 sm:p-7 rounded-xl bg-[#070b14]/80 border border-slate-800/80 backdrop-blur-md space-y-6">
+      <div className="p-6 sm:p-7 rounded-xl bg-[#080e1b] border border-slate-800 space-y-6">
         <div>
           <span className="text-[11px] font-mono tracking-widest text-cyan-400 uppercase">
             Profile

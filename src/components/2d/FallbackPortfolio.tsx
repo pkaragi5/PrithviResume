@@ -63,7 +63,7 @@ export const FallbackPortfolio: React.FC<FallbackPortfolioProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex flex-wrap gap-2 border-b border-slate-800 pb-4">
+        <div className="flex items-center gap-2 border-b border-slate-800 pb-4 overflow-x-auto no-scrollbar">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = currentTab === tab.id;
@@ -75,7 +75,7 @@ export const FallbackPortfolio: React.FC<FallbackPortfolioProps> = ({
                   sound.playHover();
                   setCurrentTab(tab.id);
                 }}
-                className={`flex items-center gap-2 px-4 py-2 text-xs font-mono rounded-lg transition-colors cursor-pointer ${
+                className={`flex items-center gap-2 min-h-[42px] px-3.5 py-2 text-xs font-mono rounded-lg transition-colors cursor-pointer whitespace-nowrap active:scale-95 ${
                   isActive
                     ? 'bg-cyan-950/70 border border-cyan-500/40 text-cyan-300 font-medium'
                     : 'bg-slate-900/40 hover:bg-slate-800/60 border border-slate-800 text-slate-400 hover:text-white'

@@ -56,10 +56,10 @@ export const ProjectsContent: React.FC = () => {
 
       {/* Main Showcase Artifact Card */}
       <div
-        className={`p-6 sm:p-7 rounded-xl border backdrop-blur-md space-y-6 ${
+        className={`p-6 sm:p-7 rounded-xl border space-y-6 ${
           activeProject.isHero
-            ? 'bg-[#06101c]/80 border-cyan-500/40 shadow-[0_0_30px_rgba(0,229,255,0.08)]'
-            : 'bg-[#060b14]/80 border-slate-800/80'
+            ? 'bg-[#080e1b] border-cyan-500/50 shadow-[0_0_30px_rgba(0,229,255,0.08)]'
+            : 'bg-[#080e1b] border-slate-800'
         }`}
       >
         {/* Title, Badge & Technologies */}

@@ -60,7 +60,7 @@ export const ExperienceContent: React.FC = () => {
       </div>
 
       {/* Active Experience Node Card */}
-      <div className="p-6 sm:p-7 rounded-xl bg-[#070b14]/80 border border-slate-800/80 backdrop-blur-md space-y-5">
+      <div className="p-6 sm:p-7 rounded-xl bg-[#080e1b] border border-slate-800 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800/60 pb-4">
           <div>
             <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">

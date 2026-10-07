@@ -66,7 +66,7 @@ export const AiLabContent: React.FC = () => {
       </div>
 
       {/* Active Model Architecture Panel */}
-      <div className="p-6 rounded-lg bg-[#070b14]/80 border border-slate-800/80 backdrop-blur-md space-y-5">
+      <div className="p-6 rounded-lg bg-[#080e1b] border border-slate-800/90 space-y-5">
         <div className="flex items-center justify-between border-b border-slate-800/60 pb-3">
           <div>
             <span className="text-[11px] font-mono uppercase tracking-widest text-cyan-400">

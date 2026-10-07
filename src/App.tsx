@@ -9,6 +9,7 @@ import { HeaderNav } from './components/HeaderNav';
 import { ZoneOverlay } from './components/ZoneOverlay';
 import { IntroScreen } from './components/IntroScreen';
 import { FallbackPortfolio } from './components/2d/FallbackPortfolio';
+import { MobileQuickBar } from './components/MobileQuickBar';
 import { ZoneConfig, ZONES } from './data/portfolioData';
 import { sound } from './audio/soundEffects';
 
@@ -96,7 +97,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#050608] text-[#E5E7EB]">
+    <div className="relative w-full h-[100dvh] overflow-hidden bg-[#050608] text-[#E5E7EB]">
       {/* Opening Intro Sequence */}
       {!hasEntered && (
         <IntroScreen
@@ -106,15 +107,17 @@ export default function App() {
         />
       )}
 
-      {/* Global Persistent Header Navigation */}
-      <HeaderNav
-        activeZone={activeZone}
-        onSelectZone={handleSelectZone}
-        is3DMode={is3DMode}
-        onToggle3DMode={handleToggle3D}
-        isMuted={isMuted}
-        onToggleMute={handleToggleMute}
-      />
+      {/* Global Persistent Header Navigation (only visible once entered) */}
+      {hasEntered && (
+        <HeaderNav
+          activeZone={activeZone}
+          onSelectZone={handleSelectZone}
+          is3DMode={is3DMode}
+          onToggle3DMode={handleToggle3D}
+          isMuted={isMuted}
+          onToggleMute={handleToggleMute}
+        />
+      )}
 
       {/* Main Viewport Content: 3D Experience or 2D Editorial View */}
       {is3DMode && webGlAvailable ? (
@@ -123,23 +126,36 @@ export default function App() {
             activeZone={activeZone}
             onSelectZone={handleSelectZone}
             isMobile={isMobile}
+            hasEntered={hasEntered}
           />
-          <ZoneOverlay
-            activeZoneId={activeZone}
-            onCloseToHub={() => handleSelectZone('hub')}
-            onNavigateZone={handleSelectZone}
-          />
+          {hasEntered && (
+            <ZoneOverlay
+              activeZoneId={activeZone}
+              onCloseToHub={() => handleSelectZone('hub')}
+              onNavigateZone={handleSelectZone}
+            />
+          )}
+
+          {/* Quick zone navigation bar on mobile view in Hub */}
+          {hasEntered && activeZone === 'hub' && (
+            <MobileQuickBar
+              activeZoneId={activeZone}
+              onSelectZone={handleSelectZone}
+            />
+          )}
         </main>
       ) : (
         <main className="w-full h-full overflow-y-auto">
-          <FallbackPortfolio
-            onSwitchTo3D={() => {
-              if (webGlAvailable) {
-                setIs3DMode(true);
-              }
-            }}
-            activeZoneId={activeZone}
-          />
+          {hasEntered && (
+            <FallbackPortfolio
+              onSwitchTo3D={() => {
+                if (webGlAvailable) {
+                  setIs3DMode(true);
+                }
+              }}
+              activeZoneId={activeZone}
+            />
+          )}
         </main>
       )}
     </div>

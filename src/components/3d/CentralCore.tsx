@@ -1,21 +1,34 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { sound } from '../../audio/soundEffects';
+import { createCoreLabelTexture } from './labelTexture';
 
 interface CentralCoreProps {
   onSelectHub?: () => void;
   isHubActive: boolean;
+  showHud?: boolean;
 }
 
-export const CentralCore: React.FC<CentralCoreProps> = ({ onSelectHub, isHubActive }) => {
+export const CentralCore: React.FC<CentralCoreProps> = ({ onSelectHub, isHubActive, showHud = true }) => {
+  const [hovered, setHovered] = useState(false);
   const outerRingRef = useRef<THREE.Group>(null);
   const midRingRef = useRef<THREE.Group>(null);
   const innerPolyRef = useRef<THREE.Mesh>(null);
   const wireframeRef = useRef<THREE.Mesh>(null);
+  const hudBillboardRef = useRef<THREE.Mesh>(null);
+  const [hudTexture, setHudTexture] = useState<THREE.CanvasTexture | null>(null);
 
-  useFrame((_, delta) => {
+  // Generate crisp WebGL core HUD texture whenever hover or hub state changes
+  useEffect(() => {
+    const tex = createCoreLabelTexture(isHubActive, hovered);
+    setHudTexture(tex);
+    return () => {
+      tex.dispose();
+    };
+  }, [isHubActive, hovered]);
+
+  useFrame(({ camera }, delta) => {
     if (outerRingRef.current) {
       outerRingRef.current.rotation.y += delta * 0.25;
       outerRingRef.current.rotation.z += delta * 0.12;
@@ -31,6 +44,10 @@ export const CentralCore: React.FC<CentralCoreProps> = ({ onSelectHub, isHubActi
     if (wireframeRef.current) {
       wireframeRef.current.rotation.y -= delta * 0.2;
       wireframeRef.current.rotation.z += delta * 0.2;
+    }
+    // Billboard HUD to smoothly face camera in 3D
+    if (hudBillboardRef.current) {
+      hudBillboardRef.current.quaternion.copy(camera.quaternion);
     }
   });
 
@@ -84,10 +101,12 @@ export const CentralCore: React.FC<CentralCoreProps> = ({ onSelectHub, isHubActi
         }}
         onPointerOver={(e) => {
           e.stopPropagation();
+          setHovered(true);
           sound.playHover();
           document.body.style.cursor = 'pointer';
         }}
         onPointerOut={() => {
+          setHovered(false);
           document.body.style.cursor = 'default';
         }}
       >
@@ -95,14 +114,14 @@ export const CentralCore: React.FC<CentralCoreProps> = ({ onSelectHub, isHubActi
         <meshStandardMaterial
           color="#164e63"
           emissive="#00e5ff"
-          emissiveIntensity={isHubActive ? 0.7 : 0.4}
+          emissiveIntensity={isHubActive || hovered ? 0.75 : 0.4}
           roughness={0.15}
           metalness={0.9}
         />
       </mesh>
 
       {/* Core Point Light */}
-      <pointLight color="#00e5ff" intensity={2} distance={8} decay={2} />
+      <pointLight color="#00e5ff" intensity={hovered ? 2.8 : 2} distance={8} decay={2} />
 
       {/* Subtle Vertical Core Beam */}
       <mesh position={[0, 1.5, 0]}>
@@ -110,7 +129,7 @@ export const CentralCore: React.FC<CentralCoreProps> = ({ onSelectHub, isHubActi
         <meshBasicMaterial
           color="#00e5ff"
           transparent
-          opacity={0.35}
+          opacity={hovered ? 0.6 : 0.35}
         />
       </mesh>
 
@@ -124,32 +143,35 @@ export const CentralCore: React.FC<CentralCoreProps> = ({ onSelectHub, isHubActi
         />
       </mesh>
 
-      {/* Center Label HUD */}
-      <Html
-        position={[0, -0.9, 0]}
-        center
-        distanceFactor={10}
-        zIndexRange={[100, 0]}
-      >
-        <div
+      {/* 3D Billboard HUD - Pure WebGL, 0 React roots, 0 unmount race conditions */}
+      {showHud && hudTexture && (
+        <mesh
+          ref={hudBillboardRef}
+          position={[0, -0.9, 0]}
           onClick={() => {
             sound.playSelect();
             onSelectHub?.();
           }}
-          className={`cursor-pointer select-none px-4 py-2 text-center rounded-lg backdrop-blur-md border transition-all duration-300 ${
-            isHubActive
-              ? 'bg-[#080d1a]/85 border-cyan-400/40 shadow-[0_0_20px_rgba(0,229,255,0.15)]'
-              : 'bg-[#050811]/70 border-white/10 hover:border-cyan-400/30'
-          }`}
+          onPointerOver={(e) => {
+            e.stopPropagation();
+            setHovered(true);
+            sound.playHover();
+            document.body.style.cursor = 'pointer';
+          }}
+          onPointerOut={() => {
+            setHovered(false);
+            document.body.style.cursor = 'default';
+          }}
         >
-          <div className="font-mono text-sm tracking-[0.25em] font-semibold text-white">
-            PRITHVI
-          </div>
-          <div className="font-mono text-[10px] tracking-[0.2em] text-cyan-300/80 mt-0.5">
-            SOFTWARE · AI · BUILD
-          </div>
-        </div>
-      </Html>
+          <planeGeometry args={[2.0, 1.0]} />
+          <meshBasicMaterial
+            map={hudTexture}
+            transparent
+            depthTest={false}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
     </group>
   );
 };

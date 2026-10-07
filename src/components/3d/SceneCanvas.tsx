@@ -6,18 +6,21 @@ import { CentralCore } from './CentralCore';
 import { ZoneNode } from './ZoneNode';
 import { FloatingParticles } from './FloatingParticles';
 import { CameraController } from './CameraController';
+import { Postprocessing } from './Postprocessing';
 import { ZONES, ZoneConfig } from '../../data/portfolioData';
 
 interface SceneCanvasProps {
   activeZone: ZoneConfig['id'];
   onSelectZone: (zoneId: ZoneConfig['id']) => void;
   isMobile: boolean;
+  hasEntered: boolean;
 }
 
 export const SceneCanvas: React.FC<SceneCanvasProps> = ({
   activeZone,
   onSelectZone,
   isMobile,
+  hasEntered,
 }) => {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#050608] touch-pan-y">
@@ -61,14 +64,15 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({
         />
 
         <Suspense fallback={null}>
-          <CameraController activeZoneId={activeZone} />
+          <CameraController activeZoneId={activeZone} isMobile={isMobile} />
 
           <FloorGrid />
-          <FloatingParticles count={isMobile ? 40 : 90} />
+          <FloatingParticles count={isMobile ? 35 : 90} />
 
           {/* Central Hub Core */}
           <CentralCore
             isHubActive={activeZone === 'hub'}
+            showHud={hasEntered && activeZone === 'hub'}
             onSelectHub={() => onSelectZone('hub')}
           />
 
@@ -78,6 +82,8 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({
               key={zone.id}
               zone={zone}
               isActive={activeZone === zone.id}
+              showLabel={hasEntered && activeZone === 'hub'}
+              isMobile={isMobile}
               onSelect={onSelectZone}
             />
           ))}
@@ -88,13 +94,16 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({
               enablePan={false}
               enableZoom={!isMobile}
               minDistance={7}
-              maxDistance={16}
+              maxDistance={isMobile ? 20 : 16}
               minPolarAngle={Math.PI / 4}
               maxPolarAngle={Math.PI / 2.15}
-              dampingFactor={0.05}
-              rotateSpeed={0.5}
+              dampingFactor={0.06}
+              rotateSpeed={isMobile ? 0.7 : 0.5}
             />
           )}
+
+          {/* Post-processing Bloom & EffectComposer */}
+          <Postprocessing isMobile={isMobile} />
         </Suspense>
       </Canvas>
     </div>
