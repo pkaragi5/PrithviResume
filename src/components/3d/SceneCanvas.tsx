@@ -23,7 +23,7 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({
   hasEntered,
 }) => {
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#050608] touch-pan-y">
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#050608] touch-none select-none">
       <Canvas
         camera={{ position: [0, 6, 12], fov: isMobile ? 55 : 45 }}
         dpr={isMobile ? [1, 1.5] : [1, 2]}
@@ -88,17 +88,23 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({
             />
           ))}
 
-          {/* OrbitControls enabled softly only when in Hub */}
+          {/* OrbitControls - Free 360-degree rotation left & right */}
           {activeZone === 'hub' && (
             <OrbitControls
+              target={[0, 1.2, 0]}
               enablePan={false}
-              enableZoom={!isMobile}
-              minDistance={7}
-              maxDistance={isMobile ? 20 : 16}
-              minPolarAngle={Math.PI / 4}
-              maxPolarAngle={Math.PI / 2.15}
+              enableZoom={true}
+              enableRotate={true}
+              minDistance={6}
+              maxDistance={22}
+              minPolarAngle={Math.PI / 6}
+              maxPolarAngle={Math.PI / 2.05}
               dampingFactor={0.06}
-              rotateSpeed={isMobile ? 0.7 : 0.5}
+              rotateSpeed={isMobile ? 0.95 : 0.75}
+              touches={{
+                ONE: 1, // TOUCH.ROTATE
+                TWO: 2, // TOUCH.DOLLY_PAN
+              }}
             />
           )}
 

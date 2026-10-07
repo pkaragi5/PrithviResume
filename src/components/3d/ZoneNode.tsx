@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ZoneConfig } from '../../data/portfolioData';
 import { sound } from '../../audio/soundEffects';
-import { createZoneLabelTexture } from './labelTexture';
+import { createZoneLabelTexture, createInteractPromptTexture } from './labelTexture';
 
 interface ZoneNodeProps {
   zone: ZoneConfig;
@@ -24,7 +24,9 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
   const meshGroupRef = useRef<THREE.Group>(null);
   const floatRef = useRef<THREE.Group>(null);
   const labelBillboardRef = useRef<THREE.Mesh>(null);
+  const promptBillboardRef = useRef<THREE.Mesh>(null);
   const [labelTexture, setLabelTexture] = useState<THREE.CanvasTexture | null>(null);
+  const [promptTexture, setPromptTexture] = useState<THREE.CanvasTexture | null>(null);
 
   // Generate crisp WebGL label texture whenever hover or active state changes
   useEffect(() => {
@@ -35,7 +37,16 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
     };
   }, [zone.name, isActive, hovered]);
 
-  // Floating animation
+  // Generate floating 'click to interact' UI prompt texture
+  useEffect(() => {
+    const tex = createInteractPromptTexture('CLICK TO INTERACT ↵', isActive ? '#ff1744' : '#00e5ff');
+    setPromptTexture(tex);
+    return () => {
+      tex.dispose();
+    };
+  }, [isActive]);
+
+  // Floating & Billboard animation
   useFrame(({ clock, camera }) => {
     const t = clock.getElapsedTime();
     if (floatRef.current) {
@@ -47,6 +58,11 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
     // Billboard label to smoothly face camera in 3D
     if (labelBillboardRef.current) {
       labelBillboardRef.current.quaternion.copy(camera.quaternion);
+    }
+    // Billboard prompt indicator with gentle hover bobbing
+    if (promptBillboardRef.current) {
+      promptBillboardRef.current.quaternion.copy(camera.quaternion);
+      promptBillboardRef.current.position.y = 2.3 + Math.sin(t * 3.5) * 0.06;
     }
   });
 
@@ -68,9 +84,9 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
     document.body.style.cursor = 'default';
   };
 
-  const accentColor = isActive ? '#00e5ff' : hovered ? '#38bdf8' : '#64748b';
-  const emissiveColor = isActive ? '#00e5ff' : hovered ? '#0284c7' : '#0f172a';
-  const emissiveIntensity = isActive ? 0.8 : hovered ? 0.5 : 0.15;
+  const accentColor = isActive ? '#ff1744' : hovered ? '#38bdf8' : '#64748b';
+  const emissiveColor = isActive ? '#ff1744' : hovered ? '#0284c7' : '#0f172a';
+  const emissiveIntensity = isActive ? 0.95 : hovered ? 0.5 : 0.15;
 
   return (
     <group position={zone.position}>
@@ -95,7 +111,7 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
         <meshBasicMaterial
           color={accentColor}
           transparent
-          opacity={isActive ? 0.9 : hovered ? 0.6 : 0.25}
+          opacity={isActive ? 0.95 : hovered ? 0.6 : 0.25}
         />
       </mesh>
 
@@ -125,7 +141,7 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
               </mesh>
               <mesh position={[0, 0.22, 0]}>
                 <boxGeometry args={[0.08, 0.7, 0.08]} />
-                <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={0.6} />
+                <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={isActive ? 0.95 : 0.6} />
               </mesh>
             </group>
           )}
@@ -146,7 +162,7 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
               </mesh>
               <mesh scale={0.75}>
                 <octahedronGeometry args={[0.4, 0]} />
-                <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={0.8} />
+                <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={isActive ? 0.95 : 0.8} />
               </mesh>
             </group>
           )}
@@ -210,7 +226,7 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
               </mesh>
               <mesh position={[0, 0, 0]}>
                 <torusGeometry args={[0.55, 0.015, 12, 32]} />
-                <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={0.6} />
+                <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={isActive ? 0.95 : 0.6} />
               </mesh>
             </group>
           )}
@@ -230,7 +246,7 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
               </mesh>
               <mesh position={[0, 0.35, 0]}>
                 <sphereGeometry args={[0.15, 16, 16]} />
-                <meshStandardMaterial color="#00e5ff" emissive="#00e5ff" emissiveIntensity={0.9} />
+                <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={isActive ? 1.0 : 0.9} />
               </mesh>
             </group>
           )}
@@ -242,12 +258,31 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
           <meshBasicMaterial
             color={accentColor}
             transparent
-            opacity={isActive ? 0.6 : hovered ? 0.4 : 0.15}
+            opacity={isActive ? 0.7 : hovered ? 0.4 : 0.15}
           />
         </mesh>
       </group>
 
-      {/* 3D Billboard Label - Pure WebGL, 0 React roots, 0 unmount race conditions */}
+      {/* Floating 'click to interact' UI indicator on hover */}
+      {hovered && promptTexture && (
+        <mesh
+          ref={promptBillboardRef}
+          position={[0, 2.3, 0]}
+          onClick={handleClick}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
+        >
+          <planeGeometry args={[1.7, 0.42]} />
+          <meshBasicMaterial
+            map={promptTexture}
+            transparent
+            depthTest={false}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
+
+      {/* 3D Billboard Zone Label */}
       {showLabel && labelTexture && (
         <mesh
           ref={labelBillboardRef}

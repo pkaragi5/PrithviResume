@@ -107,8 +107,8 @@ export default function App() {
         />
       )}
 
-      {/* Global Persistent Header Navigation (only visible once entered) */}
-      {hasEntered && (
+      {/* Global Persistent Header Navigation (on mobile, zone view replaces view with dedicated header) */}
+      {hasEntered && (!isMobile || activeZone === 'hub') && (
         <HeaderNav
           activeZone={activeZone}
           onSelectZone={handleSelectZone}
@@ -122,22 +122,27 @@ export default function App() {
       {/* Main Viewport Content: 3D Experience or 2D Editorial View */}
       {is3DMode && webGlAvailable ? (
         <main className="relative w-full h-full">
-          <SceneCanvas
-            activeZone={activeZone}
-            onSelectZone={handleSelectZone}
-            isMobile={isMobile}
-            hasEntered={hasEntered}
-          />
+          {/* On mobile, ZoneOverlay fully replaces the 3D scene when inspecting a zone */}
+          {(!isMobile || activeZone === 'hub') && (
+            <SceneCanvas
+              activeZone={activeZone}
+              onSelectZone={handleSelectZone}
+              isMobile={isMobile}
+              hasEntered={hasEntered}
+            />
+          )}
+
           {hasEntered && (
             <ZoneOverlay
               activeZoneId={activeZone}
               onCloseToHub={() => handleSelectZone('hub')}
               onNavigateZone={handleSelectZone}
+              isMobile={isMobile}
             />
           )}
 
           {/* Quick zone navigation bar on mobile view in Hub */}
-          {hasEntered && activeZone === 'hub' && (
+          {hasEntered && isMobile && activeZone === 'hub' && (
             <MobileQuickBar
               activeZoneId={activeZone}
               onSelectZone={handleSelectZone}
