@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Box, Brain, Briefcase, Code2, Compass, FolderGit2, Mail, User } from 'lucide-react';
+import { ArrowLeft, Box, Briefcase, Code2, Compass, FolderGit2, Mail, User } from 'lucide-react';
 import { PERSONAL_INFO, ZONES, ZoneConfig } from '../../data/portfolioData';
 import { CodeZoneContent } from '../../sections/CodeZoneContent';
-import { AiLabContent } from '../../sections/AiLabContent';
 import { ProjectsContent } from '../../sections/ProjectsContent';
 import { ExperienceContent } from '../../sections/ExperienceContent';
 import { AboutContent } from '../../sections/AboutContent';
@@ -25,7 +24,6 @@ export const FallbackPortfolio: React.FC<FallbackPortfolioProps> = ({
   const tabs: { id: ZoneConfig['id']; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
     { id: 'about', label: 'About', icon: User },
     { id: 'code', label: 'Code & Skills', icon: Code2 },
-    { id: 'ai', label: 'AI Lab', icon: Brain },
     { id: 'projects', label: 'Projects', icon: FolderGit2 },
     { id: 'experience', label: 'Experience', icon: Briefcase },
     { id: 'contact', label: 'Contact', icon: Mail },
@@ -92,7 +90,6 @@ export const FallbackPortfolio: React.FC<FallbackPortfolioProps> = ({
         <div className="pt-2">
           {currentTab === 'about' && <AboutContent />}
           {currentTab === 'code' && <CodeZoneContent />}
-          {currentTab === 'ai' && <AiLabContent />}
           {currentTab === 'projects' && <ProjectsContent />}
           {currentTab === 'experience' && <ExperienceContent />}
           {currentTab === 'contact' && <ContactContent />}

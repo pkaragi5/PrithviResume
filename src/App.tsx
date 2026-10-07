@@ -61,14 +61,12 @@ export default function App() {
       } else if (e.key === '1') {
         setActiveZone('code');
       } else if (e.key === '2') {
-        setActiveZone('ai');
-      } else if (e.key === '3') {
         setActiveZone('projects');
-      } else if (e.key === '4') {
+      } else if (e.key === '3') {
         setActiveZone('experience');
-      } else if (e.key === '5') {
+      } else if (e.key === '4') {
         setActiveZone('about');
-      } else if (e.key === '6') {
+      } else if (e.key === '5') {
         setActiveZone('contact');
       } else if (e.key === 'm' || e.key === 'M') {
         handleToggleMute();

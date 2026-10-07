@@ -108,8 +108,8 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({
             />
           )}
 
-          {/* Post-processing Bloom & EffectComposer */}
-          <Postprocessing isMobile={isMobile} />
+          {/* Post-processing Bloom & Focal-Depth BokehPass EffectComposer */}
+          <Postprocessing isMobile={isMobile} activeZoneId={activeZone} />
         </Suspense>
       </Canvas>
     </div>

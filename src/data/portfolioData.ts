@@ -53,7 +53,7 @@ export interface ExperienceItem {
 }
 
 export interface ZoneConfig {
-  id: 'hub' | 'code' | 'ai' | 'projects' | 'experience' | 'about' | 'contact';
+  id: 'hub' | 'code' | 'projects' | 'experience' | 'about' | 'contact';
   name: string;
   label: string;
   position: [number, number, number];
@@ -178,31 +178,6 @@ export const PROJECTS: ProjectItem[] = [
   },
 ];
 
-export const AI_LAB_EXPERIMENTS = [
-  {
-    id: 'breast-cancer-prediction',
-    title: 'Breast Cancer Prediction System',
-    domain: 'Diagnostic Machine Learning',
-    technologies: ['Python', 'Scikit-learn', 'Pandas'],
-    details: [
-      'Developed a supervised machine learning classifier for breast cancer prediction using Scikit-learn.',
-      'Performed feature engineering, preprocessing, model training, and evaluation on medical datasets.',
-      'Applied classification algorithms to improve prediction accuracy while following reproducible ML workflows.',
-    ],
-  },
-  {
-    id: 'ecosort',
-    title: 'EcoSort',
-    domain: 'Computer Vision & Waste Stream Intelligence',
-    technologies: ['Python', 'YOLO', 'Streamlit'],
-    details: [
-      'Built an AI-powered waste classification system using computer vision for sustainable waste management.',
-      'Trained and deployed YOLO models for real-time waste detection and classification.',
-      'Developed an interactive Streamlit dashboard for model inference and visualization.',
-    ],
-  },
-];
-
 export const EXPERIENCES: ExperienceItem[] = [
   {
     id: 'birla-pivot',
@@ -261,54 +236,45 @@ export const ZONES: ZoneConfig[] = [
     id: 'code',
     name: 'ZONE 01: CODE',
     label: 'Code',
-    position: [-7, 0, -2],
-    cameraTarget: [-7, 1.2, -2],
-    cameraPosition: [-7, 2.5, 4.5],
+    position: [-6.8, 0, -2.2],
+    cameraTarget: [-6.8, 1.2, -2.2],
+    cameraPosition: [-6.8, 2.6, 4.5],
     description: 'Technical competencies, programming languages, and tool suites.',
   },
   {
-    id: 'ai',
-    name: 'ZONE 02: AI LAB',
-    label: 'AI Lab',
-    position: [-4.2, 0, -7],
-    cameraTarget: [-4.2, 1.2, -7],
-    cameraPosition: [-4.2, 2.8, -0.5],
-    description: 'Applied machine learning architectures and computer vision pipelines.',
-  },
-  {
     id: 'projects',
-    name: 'ZONE 03: PROJECTS',
+    name: 'ZONE 02: PROJECTS',
     label: 'Projects',
-    position: [4.2, 0, -7],
-    cameraTarget: [4.2, 1.2, -7],
-    cameraPosition: [4.2, 2.8, -0.5],
-    description: 'Shipped platforms across tourism, healthcare, and sustainability.',
+    position: [0, 0, -7.5],
+    cameraTarget: [0, 1.2, -7.5],
+    cameraPosition: [0, 2.8, -1.0],
+    description: 'Shipped platforms, AI diagnostic models, and automated engineering pipelines.',
   },
   {
     id: 'experience',
-    name: 'ZONE 04: EXPERIENCE',
+    name: 'ZONE 03: EXPERIENCE',
     label: 'Experience',
-    position: [7, 0, -2],
-    cameraTarget: [7, 1.2, -2],
-    cameraPosition: [7, 2.5, 4.5],
+    position: [6.8, 0, -2.2],
+    cameraTarget: [6.8, 1.2, -2.2],
+    cameraPosition: [6.8, 2.6, 4.5],
     description: 'Professional timeline across Aditya Birla Group, Deloitte, and JPMorgan Chase.',
   },
   {
     id: 'about',
-    name: 'ZONE 05: ABOUT',
+    name: 'ZONE 04: ABOUT',
     label: 'About',
-    position: [-3.8, 0, 4.5],
-    cameraTarget: [-3.8, 1.0, 4.5],
-    cameraPosition: [-3.8, 2.2, 10.5],
+    position: [-4.2, 0, 5.5],
+    cameraTarget: [-4.2, 1.0, 5.5],
+    cameraPosition: [-4.2, 2.4, 11.5],
     description: 'Foundational profile, CMR University B.Tech, and linguistics.',
   },
   {
     id: 'contact',
-    name: 'ZONE 06: CONTACT',
+    name: 'ZONE 05: CONTACT',
     label: 'Contact',
-    position: [3.8, 0, 4.5],
-    cameraTarget: [3.8, 1.0, 4.5],
-    cameraPosition: [3.8, 2.2, 10.5],
+    position: [4.2, 0, 5.5],
+    cameraTarget: [4.2, 1.0, 5.5],
+    cameraPosition: [4.2, 2.4, 11.5],
     description: 'Direct communication terminal and authenticated coordinates.',
   },
 ];

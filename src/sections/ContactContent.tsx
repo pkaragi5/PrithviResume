@@ -64,7 +64,7 @@ export const ContactContent: React.FC = () => {
       <div>
         <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">
           <Send className="w-4 h-4" />
-          <span>ZONE 06 // TRANSMISSION TERMINAL</span>
+          <span>ZONE 05 // TRANSMISSION TERMINAL</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-light text-white tracking-wide mt-1">
           LET'S BUILD SOMETHING.

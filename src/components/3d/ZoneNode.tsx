@@ -146,27 +146,6 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
             </group>
           )}
 
-          {zone.id === 'ai' && (
-            // AI Lab: Neural Cluster / Geodesic Orb
-            <group>
-              <mesh>
-                <dodecahedronGeometry args={[0.55, 0]} />
-                <meshStandardMaterial
-                  color="#082f49"
-                  emissive={emissiveColor}
-                  emissiveIntensity={emissiveIntensity}
-                  roughness={0.2}
-                  metalness={0.9}
-                  wireframe={!isActive && !hovered}
-                />
-              </mesh>
-              <mesh scale={0.75}>
-                <octahedronGeometry args={[0.4, 0]} />
-                <meshStandardMaterial color={accentColor} emissive={accentColor} emissiveIntensity={isActive ? 0.95 : 0.8} />
-              </mesh>
-            </group>
-          )}
-
           {zone.id === 'projects' && (
             // Projects: Floating Showcase Monolith / Hologram Screens
             <group>

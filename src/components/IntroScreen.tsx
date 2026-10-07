@@ -56,7 +56,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onEnter }) => {
         {/* Top bar with quick Skip */}
         <div className="flex items-center justify-between w-full">
           <div className="font-mono text-[10px] sm:text-xs tracking-widest text-slate-500 uppercase">
-            3D Spatial Experience · Portfolio #2
+            3D Spatial Experience
           </div>
           <button
             type="button"

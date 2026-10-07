@@ -14,7 +14,7 @@ export const ProjectsContent: React.FC = () => {
       <div>
         <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">
           <FolderGit2 className="w-4 h-4" />
-          <span>ZONE 03 // ARCHIVE</span>
+          <span>ZONE 02 // ARCHIVE</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-light text-white tracking-wide mt-1">
           PROJECTS
