@@ -99,9 +99,9 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
       >
         <cylinderGeometry args={[1.4, 1.6, 0.05, 32]} />
         <meshStandardMaterial
-          color="#0b1019"
-          roughness={0.6}
-          metalness={0.8}
+          color="#04060c"
+          roughness={0.5}
+          metalness={0.9}
         />
       </mesh>
 
@@ -125,19 +125,19 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
           scale={hovered || isActive ? 1.08 : 1.0}
         >
           {zone.id === 'code' && (
-            // Code Terminal Architecture: Stacked computational plates
+            // Code Terminal Architecture: Stacked computational plates (deep obsidian dark)
             <group>
               <mesh position={[0, 0, 0]}>
                 <boxGeometry args={[0.9, 0.08, 0.9]} />
-                <meshStandardMaterial color="#0f172a" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.8} />
+                <meshStandardMaterial color="#050811" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.9} roughness={0.25} />
               </mesh>
               <mesh position={[0, 0.22, 0]}>
                 <boxGeometry args={[0.75, 0.08, 0.75]} />
-                <meshStandardMaterial color="#0f172a" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.8} />
+                <meshStandardMaterial color="#050811" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.9} roughness={0.25} />
               </mesh>
               <mesh position={[0, 0.44, 0]}>
                 <boxGeometry args={[0.6, 0.08, 0.6]} />
-                <meshStandardMaterial color="#0f172a" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.8} />
+                <meshStandardMaterial color="#050811" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.9} roughness={0.25} />
               </mesh>
               <mesh position={[0, 0.22, 0]}>
                 <boxGeometry args={[0.08, 0.7, 0.08]} />
@@ -147,60 +147,60 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
           )}
 
           {zone.id === 'projects' && (
-            // Projects: Floating Showcase Monolith / Hologram Screens
+            // Projects: Floating Showcase Monolith / Hologram Screens (deep dark carbon)
             <group>
               <mesh rotation={[0, Math.PI / 4, 0]}>
                 <boxGeometry args={[0.7, 0.9, 0.1]} />
                 <meshStandardMaterial
-                  color="#03253a"
+                  color="#050812"
                   emissive={emissiveColor}
                   emissiveIntensity={emissiveIntensity}
-                  roughness={0.3}
-                  metalness={0.8}
+                  roughness={0.25}
+                  metalness={0.9}
                 />
               </mesh>
               <mesh rotation={[0, -Math.PI / 4, 0]}>
                 <boxGeometry args={[0.7, 0.9, 0.1]} />
                 <meshStandardMaterial
-                  color="#03253a"
+                  color="#050812"
                   emissive={emissiveColor}
                   emissiveIntensity={emissiveIntensity * 0.8}
-                  roughness={0.3}
-                  metalness={0.8}
+                  roughness={0.25}
+                  metalness={0.9}
                 />
               </mesh>
             </group>
           )}
 
           {zone.id === 'experience' && (
-            // Experience: Stepped Career Pillars
+            // Experience: Stepped Career Pillars (deep obsidian carbon)
             <group>
               <mesh position={[-0.25, -0.1, 0]}>
                 <boxGeometry args={[0.22, 0.5, 0.22]} />
-                <meshStandardMaterial color="#0f172a" emissive={emissiveColor} emissiveIntensity={emissiveIntensity * 0.7} metalness={0.8} />
+                <meshStandardMaterial color="#050811" emissive={emissiveColor} emissiveIntensity={emissiveIntensity * 0.7} metalness={0.9} roughness={0.25} />
               </mesh>
               <mesh position={[0, 0.05, 0]}>
                 <boxGeometry args={[0.22, 0.8, 0.22]} />
-                <meshStandardMaterial color="#0f172a" emissive={emissiveColor} emissiveIntensity={emissiveIntensity * 0.85} metalness={0.8} />
+                <meshStandardMaterial color="#050811" emissive={emissiveColor} emissiveIntensity={emissiveIntensity * 0.85} metalness={0.9} roughness={0.25} />
               </mesh>
               <mesh position={[0.25, 0.2, 0]}>
                 <boxGeometry args={[0.22, 1.1, 0.22]} />
-                <meshStandardMaterial color="#0f172a" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.8} />
+                <meshStandardMaterial color="#050811" emissive={emissiveColor} emissiveIntensity={emissiveIntensity} metalness={0.9} roughness={0.25} />
               </mesh>
             </group>
           )}
 
           {zone.id === 'about' && (
-            // About: Clean Geometric Cylinder Monolith
+            // About: Clean Geometric Cylinder Monolith (deep dark obsidian)
             <group>
               <mesh>
                 <cylinderGeometry args={[0.35, 0.45, 0.9, 16]} />
                 <meshStandardMaterial
-                  color="#081826"
+                  color="#050812"
                   emissive={emissiveColor}
                   emissiveIntensity={emissiveIntensity}
-                  roughness={0.3}
-                  metalness={0.8}
+                  roughness={0.25}
+                  metalness={0.9}
                 />
               </mesh>
               <mesh position={[0, 0, 0]}>
@@ -211,16 +211,16 @@ export const ZoneNode: React.FC<ZoneNodeProps> = ({
           )}
 
           {zone.id === 'contact' && (
-            // Contact: Broadcast array / Beacon
+            // Contact: Broadcast array / Beacon (deep dark obsidian)
             <group>
               <mesh position={[0, -0.15, 0]}>
                 <coneGeometry args={[0.45, 0.7, 16]} />
                 <meshStandardMaterial
-                  color="#0c1e30"
+                  color="#050812"
                   emissive={emissiveColor}
                   emissiveIntensity={emissiveIntensity}
-                  roughness={0.3}
-                  metalness={0.8}
+                  roughness={0.25}
+                  metalness={0.9}
                 />
               </mesh>
               <mesh position={[0, 0.35, 0]}>

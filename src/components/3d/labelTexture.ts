@@ -13,12 +13,12 @@ export function createZoneLabelTexture(
 
   ctx.clearRect(0, 0, 512, 192);
 
-  const primaryColor = isActive ? '#ff1744' : isHovered ? '#38bdf8' : '#64748b';
+  const primaryColor = isActive ? '#ff1744' : isHovered ? '#38bdf8' : '#00e5ff';
   const bgColor = isActive
-    ? 'rgba(40, 8, 16, 0.96)'
+    ? 'rgba(28, 5, 12, 0.98)'
     : isHovered
-    ? 'rgba(8, 20, 36, 0.95)'
-    : 'rgba(6, 11, 20, 0.9)';
+    ? 'rgba(4, 10, 20, 0.98)'
+    : 'rgba(2, 4, 8, 0.98)';
 
   // Draw rounded card
   const x = 24, y = 24, w = 464, h = 144, r = 16;
@@ -37,7 +37,7 @@ export function createZoneLabelTexture(
   ctx.fillStyle = bgColor;
   ctx.fill();
 
-  ctx.lineWidth = isHovered || isActive ? 5 : 2;
+  ctx.lineWidth = isHovered || isActive ? 5 : 3.5;
   ctx.strokeStyle = primaryColor;
   ctx.stroke();
 
@@ -161,10 +161,10 @@ export function createInteractPromptTexture(
   ctx.quadraticCurveTo(x, y, x + r, y);
   ctx.closePath();
 
-  ctx.fillStyle = 'rgba(3, 10, 22, 0.94)';
+  ctx.fillStyle = 'rgba(2, 4, 8, 0.98)';
   ctx.fill();
 
-  ctx.lineWidth = 3.5;
+  ctx.lineWidth = 4;
   ctx.strokeStyle = color;
   ctx.stroke();
 
